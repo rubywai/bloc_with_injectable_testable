@@ -1,5 +1,6 @@
 #Bloc Pattern with Dependency Injection and Testable
-Bloc Pattern => Bloc Library
+
+#Bloc Pattern => Bloc Library
 Dependency injection => injectable
 
 Injectable is Android Dagger equilavent(GetIt Generator)
