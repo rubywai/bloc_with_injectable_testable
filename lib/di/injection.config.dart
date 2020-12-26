@@ -14,6 +14,7 @@ import '../data/database/contact_dao.dart';
 import '../data/database/contact_database.dart';
 import 'injection.dart';
 import '../data/contact_repository.dart';
+import '../data/contact_repositoryImpl.dart';
 import '../bloc/put/cubit/editcontact_cubit.dart';
 import '../bloc/get/cubit/getcontact_cubit.dart';
 import '../bloc/post/cubit/postcontact_cubit.dart';
@@ -37,7 +38,7 @@ Future<GetIt> $initGetIt(
       () => contactModule.apiService(get<Dio>(), get<LogInterceptor>()));
   gh.lazySingleton<ContactDao>(
       () => contactModule.contactDao(get<ContactDatabase>()));
-  gh.factory<ContactRepository>(() => ContactRepository(get<ApiService>()));
+  gh.factory<ContactRepository>(() => ContactRepositoryImpl(get<ApiService>()));
   gh.factory<EditContactCubit>(
       () => EditContactCubit(get<ContactRepository>()));
   gh.factory<GetContactCubit>(() => GetContactCubit(get<ContactRepository>()));

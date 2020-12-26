@@ -16,16 +16,14 @@ final getIt = GetIt.instance;
 )
 Future<GetIt> configureDependencies() async => await $initGetIt(getIt);
 
-
-
 @module
-abstract class ContactModule{
+abstract class ContactModule {
   @lazySingleton
   Dio get dio => Dio();
 
   @lazySingleton
-  ApiService  apiService(@injectable Dio dio, @injectable LogInterceptor logInterceptor){
-    //dio.interceptors.add(logInterceptor);
+  ApiService apiService(Dio dio, LogInterceptor logInterceptor) {
+    dio.interceptors.add(logInterceptor);
     return ApiService(dio);
   }
 
@@ -35,8 +33,8 @@ abstract class ContactModule{
       $FloorContactDatabase.databaseBuilder('contact.db').build();
 
   @lazySingleton
-  ContactDao contactDao(@injectable ContactDatabase contactDatabase)  {
-    ContactDatabase contactDB =  contactDatabase;
+  ContactDao contactDao(ContactDatabase contactDatabase) {
+    ContactDatabase contactDB = contactDatabase;
     return contactDB.dao;
   }
 
@@ -45,8 +43,4 @@ abstract class ContactModule{
 
   @lazySingleton
   LogInterceptor get loggingInter => LogInterceptor(requestBody: true);
-
-
-
 }
-
