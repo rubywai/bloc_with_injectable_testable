@@ -1,8 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:floor/floor.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 @Entity(tableName: 'contact')
-class Contact{
+class Contact extends Equatable{
   @primaryKey
   String id;
   String name;
@@ -23,5 +24,9 @@ class Contact{
     'job': this.job,
     'age': this.age,
   };
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [id,name,job,age];
 
 }
