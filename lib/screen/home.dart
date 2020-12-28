@@ -1,4 +1,5 @@
 import 'package:bloc_rest_api/bloc/get/cubit/getcontact_cubit.dart';
+import 'package:bloc_rest_api/bloc/theme/theme_cubit.dart';
 import 'package:bloc_rest_api/data/database/contact_dao.dart';
 import 'package:bloc_rest_api/data/model/contact.dart';
 import 'package:bloc_rest_api/di/injection.dart';
@@ -12,9 +13,31 @@ import 'edit_screen.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ThemeCubit themeCubit = BlocProvider.of<ThemeCubit>(context,);
     return Scaffold(
       appBar: AppBar(
         title: Text('Contact List'),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (str){
+              if(str == 'Light Theme'){
+                themeCubit.lightTheme();
+              }
+              else if(str == 'Dark Theme'){
+                themeCubit.darkTheme();
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return {'Light Theme', 'Dark Theme'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
+
       ),
       floatingActionButton: Row(
         mainAxisSize: MainAxisSize.min,
@@ -59,37 +82,35 @@ class Home extends StatelessWidget {
   }
 
   Widget item(Contact contact, BuildContext context) {
-    return Card(
-      child: Slidable(
-        actionPane: SlidableDrawerActionPane(),
-        actions: [
-          IconSlideAction(
-            icon: Icons.edit,
-            color: Colors.blue,
-            onTap: () async {
-              var result = await Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => EditScreen(contact)));
-              if (result != null && result == 'success') {
-                BlocProvider.of<GetContactCubit>(context).getContact();
-              }
-            },
-          )
-        ],
-        secondaryActions: [
-          IconSlideAction(
-            icon: Icons.delete,
-            color: Colors.red,
-            onTap: () {
-              context.bloc<GetContactCubit>().delete(contact.id);
-            },
-          )
-        ],
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actions: [
+        IconSlideAction(
+          icon: Icons.edit,
+          onTap: () async {
+            var result = await Navigator.push(context,
+                MaterialPageRoute(builder: (_) => EditScreen(contact)));
+            if (result != null && result == 'success') {
+              BlocProvider.of<GetContactCubit>(context).getContact();
+            }
+          },
+        )
+      ],
+      secondaryActions: [
+        IconSlideAction(
+          icon: Icons.delete,
+          onTap: () {
+            context.bloc<GetContactCubit>().delete(contact.id);
+          },
+        )
+      ],
+      child: Card(
         child: ListTile(
           onTap: _getData(contact),
-          leading: IconButton(icon: Icon(Icons.save,color: Colors.blue,),
+          leading: IconButton(icon: Icon(Icons.save,),
           onPressed: _saveData(contact)
           ),
-          title: Text(contact.name),
+          title: Text(contact.name,style: Theme.of(context).textTheme.headline6,),
           subtitle: Text(contact.job),
           trailing: Text('age ${contact.age}'),
         ),
