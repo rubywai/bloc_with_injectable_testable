@@ -7,7 +7,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/api/apiservice.dart';
 import '../data/database/contact_dao.dart';
@@ -18,6 +17,9 @@ import '../data/contact_repositoryImpl.dart';
 import '../bloc/put/cubit/editcontact_cubit.dart';
 import '../bloc/get/cubit/getcontact_cubit.dart';
 import '../bloc/post/cubit/postcontact_cubit.dart';
+import '../bloc/theme/theme_cubit.dart';
+import '../common/theme/theme_repository.dart';
+import '../common/theme/theme_repository_impl.dart';
 
 /// adds generated dependencies
 /// to the provided [GetIt] instance
@@ -33,7 +35,6 @@ Future<GetIt> $initGetIt(
   gh.lazySingleton<ContactDatabase>(() => contactDatabase);
   gh.lazySingleton<Dio>(() => contactModule.dio);
   gh.lazySingleton<LogInterceptor>(() => contactModule.loggingInter);
-  gh.lazySingletonAsync<SharedPreferences>(() => contactModule.share);
   gh.lazySingleton<ApiService>(
       () => contactModule.apiService(get<Dio>(), get<LogInterceptor>()));
   gh.lazySingleton<ContactDao>(
@@ -44,6 +45,10 @@ Future<GetIt> $initGetIt(
   gh.factory<GetContactCubit>(() => GetContactCubit(get<ContactRepository>()));
   gh.factory<PostcontactCubit>(
       () => PostcontactCubit(get<ContactRepository>()));
+  gh.factory<ThemeCubit>(() => ThemeCubit(get<ThemePreference>()));
+
+  // Eager singletons must be registered in the right order
+  gh.singleton<ThemePreference>(ThemeRepositoryImpl());
   return get;
 }
 

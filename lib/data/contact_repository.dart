@@ -9,5 +9,4 @@ abstract class ContactRepository{
 
   Future<Contact> deleteContact(String id);
 
-
 }

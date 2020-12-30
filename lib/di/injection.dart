@@ -38,8 +38,6 @@ abstract class ContactModule {
     return contactDB.dao;
   }
 
-  @lazySingleton
-  Future<SharedPreferences> get share => SharedPreferences.getInstance();
 
   @lazySingleton
   LogInterceptor get loggingInter => LogInterceptor(requestBody: true);
