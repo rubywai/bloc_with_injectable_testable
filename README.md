@@ -1,5 +1,7 @@
 #Bloc Pattern with Dependency Injection and Testable
 
+#Night Theme or Dark Theme Suppory
+
 #Bloc Pattern => Bloc Library
 
 #Dependency injection => injectable
