@@ -15,3 +15,5 @@
 #Http => Retrofit
 
 #Database => Floor[might change to Moor]
+
+#Null safety support pending
